@@ -167,4 +167,19 @@
       <div class="footer-copyright text-center py-3 text-white">© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.</div>        
     </footer>
 </body>
+
+<!-- Register the service worker. Tells the browser that we're using a service worker and explains
+awhere to find the relevant code. Note that navigator is the browser-->
+<!-- this type of function is a closure in a module design pattern -->
+<!-- It's important that we include the ./ in front of service-worker.js. If we used an absolute path
+here, this configuration would break on the deployed application. -->
+<script>
+  (function() {
+    if("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(() => console.log("Service Worker registered successfully."))
+        .catch(error => console.log("Service Worker registration failed:", error));
+    }
+  })();
+  </script>
 </html>
