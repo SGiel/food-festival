@@ -24,12 +24,17 @@ const FILES_TO_CACHE = [
 // service worker. The context of self here refers to the service worker object.
 
 // Respond with cached resources
+// fetch used when want to tell service worker what to do with something in the cache
 self.addEventListener('fetch', function (e) {
   console.log('fetch request : ' + e.request.url)
+
+ // respondWith will intercept the http response in order to send resources from the service worker
   e.respondWith(
+    // match the request with the same resource that is in the cache if it exists
     caches.match(e.request).then(function (request) {
       if (request) { // if cache is available, respond with cache
         console.log('responding with cache : ' + e.request.url)
+        // returns request if it exists in the cache, else it will fetch it from the network
         return request
       } else {       // if there are no cache, try fetching request
         console.log('file is not cached, fetching : ' + e.request.url)
@@ -44,6 +49,7 @@ self.addEventListener('fetch', function (e) {
 
 // Cache resources
 self.addEventListener('install', function (e) {
+  // waitUntil method on the event says to wait until the enclosing code is finished executing
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       console.log('installing cache : ' + CACHE_NAME)
@@ -55,15 +61,19 @@ self.addEventListener('install', function (e) {
 // Delete outdated caches
 self.addEventListener('activate', function(e) {
   e.waitUntil(
+    // caches.keys() returns a promise with an array of the cache keys
+    // then pass through a function with a keylist holding the cache keys
     caches.keys().then(function(keyList) {
       // `keyList` contains all cache names under your username.github.io
-      // filter out ones that has this app prefix to create keeplist
+      // filter out ones that have this app prefix to create keeplist
+      // HOW DOES INDEXOF WORK WITH APP_PREFIX???
       let cacheKeeplist = keyList.filter(function(key) {
+        // any key that matches the index of APP_PREFIX???
         return key.indexOf(APP_PREFIX);
       });
       // add current cache name to keeplist
       cacheKeeplist.push(CACHE_NAME);
-
+      // deletes old versions of cache list???
       return Promise.all(
         keyList.map(function(key, i) {
           if (cacheKeeplist.indexOf(key) === -1) {

@@ -181,5 +181,10 @@ here, this configuration would break on the deployed application. -->
         .catch(error => console.log("Service Worker registration failed:", error));
     }
   })();
+  // immediately invoke function above (IIFE) with empty parentheses after
+  // parentheses around function let JS know it will process the function as a function expression
+  // the last pair of parentheses after the function expression will immediately invoke the function
+  // the instant the function is defined JS will execute the function immediately
+  // because of that this function is not part of the global space
   </script>
 </html>
