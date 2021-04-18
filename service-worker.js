@@ -66,14 +66,14 @@ self.addEventListener('activate', function(e) {
     caches.keys().then(function(keyList) {
       // `keyList` contains all cache names under your username.github.io
       // filter out ones that have this app prefix to create keeplist
-      // HOW DOES INDEXOF WORK WITH APP_PREFIX???
+      // ?? HOW DOES INDEXOF WORK WITH APP_PREFIX
       let cacheKeeplist = keyList.filter(function(key) {
         // any key that matches the index of APP_PREFIX???
         return key.indexOf(APP_PREFIX);
       });
       // add current cache name to keeplist
       cacheKeeplist.push(CACHE_NAME);
-      // deletes old versions of cache list???
+      // ?? deletes old versions of cache list???
       return Promise.all(
         keyList.map(function(key, i) {
           if (cacheKeeplist.indexOf(key) === -1) {
